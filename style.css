@@ -1,60 +1,61 @@
-body{
+body {
     background-color: white;
     height: 100vh;
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.contactSearch{
-    width:341px;
+.contactSearch {
+    width: 341px;
     height: 30px;
     box-sizing: content-box;
     position: sticky;
-    border-top: 1px ;
+    border-top: 1px;
 }
 
-.container{
-    width:70%;
-    border : 4px solid black;
-    /* background-color: wheat; */
+.container {
+    width: 70%;
+    border: 4px solid black;
     height: 80vh;
     overflow: hidden;
 }
 
-.container .chat_section{
+.container .chat_section {
     display: grid;
     grid-template-columns: 350px auto;
     grid-template-rows: 80vh 80vh;
 }
 
-.chat_section .contact_section{
+.chat_section .contact_section {
     overflow: hidden;
-
 }
 
-.chat_section .message_section{
-    /* background-color:lightgray; */
+.chat_section .message_section {
     opacity: 0.7;
-
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    display: flex;
+    display: none;
 }
 
-.all_contacts{
-    height:80vh;
+.all_contacts {
+    height: 80vh;
     overflow-y: scroll;
 }
 
-.all_contacts::-webkit-scrollbar{
+.all_contacts::-webkit-scrollbar {
     width: 6px;
     height: 10px;
 }
 
-.all_contacts::-webkit-scrollbar-button{
+.all_contacts::-webkit-scrollbar-button {
     height: 100px;
 }
 
-.mainContactSupportDiv{
-    display:grid;
+.mainContactSupportDiv {
+    display: grid;
     grid-template-columns: 50px auto;
     grid-template-rows: 60px 60px;
     padding: 6px;
@@ -62,52 +63,78 @@ body{
     height: 90px;
 }
 
-.userProductImg{
-    height:50px;
-    width:50px;
+.userProductImg {
+    height: 50px;
+    width: 50px;
     border-radius: 30%;
 }
 
-.userSupportDetailsBox{
-    padding-left:10px;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center; */
+.userSupportDetailsBox {
+    padding-left: 10px;
 }
 
-.userProductLastMessage{
-    color:grey;
-    margin-top:5px;
+.userProductLastMessage {
+    color: grey;
+    margin-top: 5px;
 }
 
-.userSupportLogo{
+.userSupportLogo {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.sendMessage{
-    height:40px;
+.sendMessage {
+    height: 40px;
     padding-left: 8px;
-    width:100%;
-    /* margin-top: 94%; */
+    width: 100%;
     background-color: white;
 }
 
-.scrollableMessage, .messageSection{
+.scrollableMessage, .messageSection {
     height: 80vh; 
     overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;
 }
 
-.messageText{
-    background-color: white;
-    color: black;
+.messageText {
     min-width: 20px;
     display: inline-block;
-    padding:5px 10px;
+    padding: 5px 10px;
     border-radius: 10px;
     margin-bottom: 15px;
-    
+}
+
+.messageText.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    margin-left:30%
+    /* margin-left: auto; */
+}
+
+.messageText.bot {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.mainMessageBox{
+    margin-bottom: 20px;
+}
+
+.header{
+    height: 1px;
+    padding-left: 8px;
+    width: 100%;
+    background-color: white;
+}
+
+.all_messages, .message_section{
+    height: 80vh; 
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
 }
