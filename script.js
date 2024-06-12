@@ -282,7 +282,7 @@ function handleChat(contact_details = message_chats){
         userProductLastMessage.innerHTML = "hello"
         userSupportDetailsBox.append(userProductLastMessage)
 
-        const userProductImg = document.createElement('p');
+        const userProductImg = document.createElement('img');
         userProductImg.setAttribute('src',userSupport?.imageURL);
         userProductImg.classList.add("userProductImg")        
         userSupportLogo.append(userProductImg)
@@ -298,35 +298,72 @@ function handleChat(contact_details = message_chats){
 }
 
 function handleMessageSection(id = 1){
-    currentContact = id
+    currentContact = id;
     console.log("clicked");
 
-    const scrollableMsg  = document.querySelector('all_messages')
-    const mainMessageBox= document.createElement('div')
-    mainMessageBox.innerHTML = null
-    mainMessageBox.classList.add("mainMessageBox")
+    const scrollableMsg = document.querySelector('.all_messages');
+    scrollableMsg.innerHTML = null;
+    const mainMessageBox = document.createElement('div');
+    mainMessageBox.classList.add("mainMessageBox");
 
-    let messageArr = []
-    message_chats[id-1]?.messageList.forEach((msg)=>{ 
-        const messageText = document.createElement('div')
-        messageText.classList.add("messageText")
-        console.log(msg.message)
-        messageText.innerHTML = msg?.message;
-        messageArr.push(messageText)
+    let messageArr = [];
+    message_chats[id - 1]?.messageList.forEach((msg) => {
+        const messageText = document.createElement('div');
+        messageText.classList.add("messageText");
+        console.log(msg.message);
+        messageText.innerHTML = msg.message;
+        messageArr.push(messageText);
 
-        const brealTag = document.createElement('br')
-        // messageArr.push(brealTag)
-        
-    })
-    console.log(messageArr)
-    mainMessageBox.append(...messageArr)
-    scrollableMsg.append(mainMessageBox)
+        const breakTag = document.createElement('br');
+        messageArr.push(breakTag);
+    });
+
+    console.log(messageArr);
+    mainMessageBox.append(...messageArr);
+    scrollableMsg.append(mainMessageBox);
 
 }
 
+function handleFilter(name)
+{
+  console.log(name);
+  let filteredContact = message_chats.filter((item)=>{
+    if (item?.title.includes(name))
+      return item;
+  })
+  handleChat(filteredContact);
+}
 
 
-handleChat()
+function handleContactFilter(){
+    const inputBox = document.querySelector('.contactSearch');
+    console.log(inputBox);
+    inputBox.addEventListener('keyup', (event)=>{
+      handleFilter(event.target.value); 
+    })
+}
+
+function handleMessageSend(){
+    const inputBox = document.querySelector('.sendMessage');
+    inputBox.addEventListener("keyup", (event)=>{
+      if (event.key === "Enter"){
+        if (event.target.value.trim() === "")
+          return ;
+          console.log(event.target.value);
+        message_chats[currentContact-1].messageList.push({ 
+            
+            message_chats: event.target.value
+        })
+        handleMessageSection(currentContact);
+        event.target.value = null;
+      }
+    })
+  }
+
+
+handleChat();
+handleContactFilter();
+handleMessageSend();
 
 
 
