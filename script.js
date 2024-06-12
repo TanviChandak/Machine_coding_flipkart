@@ -248,8 +248,10 @@ const message_chats = [
   }
 ]
 
+
+
 let currentContact ;
-function handleChat(contact_details = message_chats){
+function handleChat(contact_details){
     
     let contactList = []
     let contact_section = document.querySelector(".all_contacts");
@@ -259,7 +261,7 @@ function handleChat(contact_details = message_chats){
         const mainContactSupportDiv = document.createElement("div");
         mainContactSupportDiv.classList.add("mainContactSupportDiv")
 
-        mainContactSupportDiv.addEventListener("click",()=>handleMessageSection(userSupport.id))
+        mainContactSupportDiv.addEventListener("click",()=>handleMessageSection(userSupport.id,userSupport))
         const userSupportLogo = document.createElement('div')
         userSupportLogo.classList.add("userSupportLogo");
 
@@ -279,7 +281,7 @@ function handleChat(contact_details = message_chats){
 
         const userProductLastMessage = document.createElement('p');
         userProductLastMessage.classList.add("userProductLastMessage")
-        userProductLastMessage.innerHTML = "hello"
+        userProductLastMessage.innerHTML = "last message"
         userSupportDetailsBox.append(userProductLastMessage)
 
         const userProductImg = document.createElement('img');
@@ -297,20 +299,22 @@ function handleChat(contact_details = message_chats){
 
 }
 
-function handleMessageSection(id = 1){
+function handleMessageSection(id = 1,userSupportDetails) {
     currentContact = id;
-    console.log("clicked");
-
+    console.log(userSupportDetails);
+    const headerdiv = document.createElement('p');
+    headerdiv.classList.add('header')
+    headerdiv.innerHTML = userSupportDetails?.title;
     const scrollableMsg = document.querySelector('.all_messages');
     scrollableMsg.innerHTML = null;
     const mainMessageBox = document.createElement('div');
     mainMessageBox.classList.add("mainMessageBox");
 
     let messageArr = [];
-    message_chats[id - 1]?.messageList.forEach((msg) => {
+    message_chats[currentContact - 1]?.messageList.forEach((msg) => {
         const messageText = document.createElement('div');
         messageText.classList.add("messageText");
-        console.log(msg.message);
+        messageText.classList.add(msg.sender === "USER" ? "user" : "bot");
         messageText.innerHTML = msg.message;
         messageArr.push(messageText);
 
@@ -318,21 +322,21 @@ function handleMessageSection(id = 1){
         messageArr.push(breakTag);
     });
 
-    console.log(messageArr);
     mainMessageBox.append(...messageArr);
     scrollableMsg.append(mainMessageBox);
 
+    document.querySelector('.message_section').style.display = 'flex';
 }
 
-function handleFilter(name)
-{
-  console.log(name);
-  let filteredContact = message_chats.filter((item)=>{
-    if (item?.title.includes(name))
-      return item;
-  })
-  handleChat(filteredContact);
-}
+function handleFilter(name){
+    console.log(name);
+    let filteredContact = message_chats.filter((item) => {
+      if (item?.title.toLowerCase().includes(name.toLowerCase())) {
+        return item;
+      }
+    });
+    handleChat(filteredContact);
+  }
 
 
 function handleContactFilter(){
@@ -343,25 +347,36 @@ function handleContactFilter(){
     })
 }
 
-function handleMessageSend(){
+function handleMessageSend() {
     const inputBox = document.querySelector('.sendMessage');
-    inputBox.addEventListener("keyup", (event)=>{
-      if (event.key === "Enter"){
-        if (event.target.value.trim() === "")
-          return ;
-          console.log(event.target.value);
-        message_chats[currentContact-1].messageList.push({ 
-            
-            message_chats: event.target.value
-        })
-        handleMessageSection(currentContact);
-        event.target.value = null;
-      }
-    })
-  }
+    inputBox.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+            if (event.target.value.trim() === "") return;
+
+            message_chats[currentContact - 1].messageList.push({
+                messageId: "msg" + (message_chats[currentContact - 1].messageList.length + 1),
+                message: event.target.value,
+                timestamp: Date.now(),
+                sender: "USER",
+                messageType: "text"
+            });
+            handleMessageSection(currentContact);
+            event.target.value = null;
+        }
+    });
+}
 
 
-handleChat();
+
+async function fetchData(){
+    const data = await fetch('https://my-json-server.typicode.com/codebuds-fk/chat/chats');
+    const res = await data.json();
+    // console.log(data,res)
+    handleChat(res)
+}
+
+fetchData();
+// handleChat();
 handleContactFilter();
 handleMessageSend();
 
