@@ -34,7 +34,8 @@ body{
 }
 
 .chat_section .message_section{
-    background-color:lightgray;
+    /* background-color:lightgray; */
+    opacity: 0.7;
 
 }
 
@@ -89,7 +90,24 @@ body{
     height:40px;
     padding-left: 8px;
     width:100%;
-    margin-top: 94%;
+    /* margin-top: 94%; */
     background-color: white;
 }
 
+.scrollableMessage, .messageSection{
+    height: 80vh; 
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.messageText{
+    background-color: white;
+    color: black;
+    min-width: 20px;
+    display: inline-block;
+    padding:5px 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    
+}
